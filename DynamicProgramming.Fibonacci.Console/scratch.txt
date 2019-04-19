@@ -1,0 +1,161 @@
+﻿https://docs.microsoft.com/en-us/dotnet/api/system.numerics.biginteger?redirectedfrom=MSDN&view=netframework-4.7.2
+
+the largest possible value is 9,223,372,036,854,775,807
+
+
+Data type                                     Maximum positive value
+Int32                                                  2,147,483,647
+UInt32                                                 4,294,967,295
+Int64                                      9,223,372,036,854,775,808
+UInt64                                    18,446,744,073,709,551,615
+Your number      305,802,052,421,002,911,840,647,389,720,929,531,201
+
+
+The BigNumber class implements methods for formatting and parsing
+// big numeric values. To format and parse numeric values, applications should
+// use the Format and Parse methods provided by the numeric
+// classes (BigInteger). Those
+// Format and Parse methods share a common implementation
+// provided by this class, and are thus documented in detail here.
+//
+// Formatting
+//
+// The Format methods provided by the numeric classes are all of the
+// form
+//
+//  public static String Format(XXX value, String format);
+//  public static String Format(XXX value, String format, NumberFormatInfo info);
+//
+// where XXX is the name of the particular numeric class. The methods convert
+// the numeric value to a string using the format string given by the
+// format parameter. If the format parameter is null or
+// an empty string, the number is formatted as if the string "G" (general
+// format) was specified. The info parameter specifies the
+// NumberFormatInfo instance to use when formatting the number. If the
+// info parameter is null or omitted, the numeric formatting information
+// is obtained from the current culture. The NumberFormatInfo supplies
+// such information as the characters to use for decimal and thousand
+// separators, and the spelling and placement of currency symbols in monetary
+// values.
+//
+// Format strings fall into two categories: Standard format strings and
+// user-defined format strings. A format string consisting of a single
+// alphabetic character (A-Z or a-z), optionally followed by a sequence of
+// digits (0-9), is a standard format string. All other format strings are
+// used-defined format strings.
+//
+// A standard format string takes the form Axx, where A is an
+// alphabetic character called the format specifier and xx is a
+// sequence of digits called the precision specifier. The format
+// specifier controls the type of formatting applied to the number and the
+// precision specifier controls the number of significant digits or decimal
+// places of the formatting operation. The following table describes the
+// supported standard formats.
+//
+// C c - Currency format. The number is
+// converted to a string that represents a currency amount. The conversion is
+// controlled by the currency format information of the NumberFormatInfo
+// used to format the number. The precision specifier indicates the desired
+// number of decimal places. If the precision specifier is omitted, the default
+// currency precision given by the NumberFormatInfo is used.
+//
+// D d - Decimal format. This format is
+// supported for integral types only. The number is converted to a string of
+// decimal digits, prefixed by a minus sign if the number is negative. The
+// precision specifier indicates the minimum number of digits desired in the
+// resulting string. If required, the number will be left-padded with zeros to
+// produce the number of digits given by the precision specifier.
+//
+// E e Engineering (scientific) format.
+// The number is converted to a string of the form
+// "-d.ddd...E+ddd" or "-d.ddd...e+ddd", where each
+// 'd' indicates a digit (0-9). The string starts with a minus sign if the
+// number is negative, and one digit always precedes the decimal point. The
+// precision specifier indicates the desired number of digits after the decimal
+// point. If the precision specifier is omitted, a default of 6 digits after
+// the decimal point is used. The format specifier indicates whether to prefix
+// the exponent with an 'E' or an 'e'. The exponent is always consists of a
+// plus or minus sign and three digits.
+//
+// F f Fixed point format. The number is
+// converted to a string of the form "-ddd.ddd....", where each
+// 'd' indicates a digit (0-9). The string starts with a minus sign if the
+// number is negative. The precision specifier indicates the desired number of
+// decimal places. If the precision specifier is omitted, the default numeric
+// precision given by the NumberFormatInfo is used.
+//
+// G g - General format. The number is
+// converted to the shortest possible decimal representation using fixed point
+// or scientific format. The precision specifier determines the number of
+// significant digits in the resulting string. If the precision specifier is
+// omitted, the number of significant digits is determined by the type of the
+// number being converted (10 for int, 19 for long, 7 for
+// float, 15 for double, 19 for Currency, and 29 for
+// Decimal). Trailing zeros after the decimal point are removed, and the
+// resulting string contains a decimal point only if required. The resulting
+// string uses fixed point format if the exponent of the number is less than
+// the number of significant digits and greater than or equal to -4. Otherwise,
+// the resulting string uses scientific format, and the case of the format
+// specifier controls whether the exponent is prefixed with an 'E' or an
+// 'e'.
+//
+// N n Number format. The number is
+// converted to a string of the form "-d,ddd,ddd.ddd....", where
+// each 'd' indicates a digit (0-9). The string starts with a minus sign if the
+// number is negative. Thousand separators are inserted between each group of
+// three digits to the left of the decimal point. The precision specifier
+// indicates the desired number of decimal places. If the precision specifier
+// is omitted, the default numeric precision given by the
+// NumberFormatInfo is used.
+//
+// X x - Hexadecimal format. This format is
+// supported for integral types only. The number is converted to a string of
+// hexadecimal digits. The format specifier indicates whether to use upper or
+// lower case characters for the hexadecimal digits above 9 ('X' for 'ABCDEF',
+// and 'x' for 'abcdef'). The precision specifier indicates the minimum number
+// of digits desired in the resulting string. If required, the number will be
+// left-padded with zeros to produce the number of digits given by the
+// precision specifier.
+//
+// Some examples of standard format strings and their results are shown in the
+// table below. (The examples all assume a default NumberFormatInfo.)
+//
+// Value        Format  Result
+// 12345.6789   C       $12,345.68
+// -12345.6789  C       ($12,345.68)
+// 12345        D       12345
+// 12345        D8      00012345
+// 12345.6789   E       1.234568E+004
+// 12345.6789   E10     1.2345678900E+004
+// 12345.6789   e4      1.2346e+004
+// 12345.6789   F       12345.68
+// 12345.6789   F0      12346
+// 12345.6789   F6      12345.678900
+// 12345.6789   G       12345.6789
+// 12345.6789   G7      12345.68
+// 123456789    G7      1.234568E8
+// 12345.6789   N       12,345.68
+// 123456789    N4      123,456,789.0000
+// 0x2c45e      x       2c45e
+// 0x2c45e      X       2C45E
+// 0x2c45e      X8      0002C45E
+//
+
+https://referencesource.microsoft.com/#System.Numerics/System/Numerics/BigInteger.cs
+
+
+assume you know what a byte is. A byte array is simply an area of memory containing a group of contiguous (side by side) bytes, such that it makes sense to talk about them in order: the first byte, the second byte etc..
+
+Just as bytes can encode different types and ranges of data (numbers from 0 to 255, numbers from -128 to 127, single characters using ASCII e.g. 'a' or '%', CPU op-codes), each byte in a byte array may be any of these things, or contribute to some multi-byte values such as numbers with larger range (e.g. 16-bit unsigned int from 0..65535), international character sets, textual strings ("hello"), or part/all of a compiled computer programs.
+
+The crucial thing about a byte array is that it gives indexed (fast), precise, raw access to each 8-bit value being stored in that part of memory, and you can operate on those bytes to control every single bit. The bad thing is the computer just treats every entry as an independent 8-bit number - which may be what your program is dealing with, or you may prefer some powerful data-type such as a string that keeps track of its own length and grows as necessary, or a floating point number that lets you store say 3.14 without thinking about the bit-wise representation. As a data type, it is inefficient to insert or remove data near the start of a long array, as all the subsequent elements need to be shuffled to make or fill the gap created/required.
+
+
+n computer science, an array data structure or simply array is a data structure consisting of a collection of elements (values or variables), each identified by one or more integer indices, stored so that the address of each element can be computed from its index tuple by a simple mathematical formula.
+
+So when you say byte array, you're referring to an array of some defined length (e.g. number of elements) that contains a collection of byte (8 bits) sized elements.
+
+In C# a byte array could look like:
+
+byte[] bytes = { 3, 10, 8, 25 };
+The sample above defines an array of 4 elements, where each element can be up to a Byte in length.
